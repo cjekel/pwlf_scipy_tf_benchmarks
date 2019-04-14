@@ -32,8 +32,6 @@ for i, n_data in enumerate(n):
         t3 = time()
         # run_times[0, i, j] = t1 - t0
         run_times[1, i, j] = t3 - t2
-        break
-    break
 
 np.save('bench_run_times/6_break_times.npy', run_times)
 np.save('bench_run_times/n.npy', n)
