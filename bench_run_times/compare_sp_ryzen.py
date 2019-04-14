@@ -11,25 +11,14 @@ k = 2.535
 
 run_times = np.load('amd_ryzen_2700x/6_break_times.npy')
 n = np.load('amd_ryzen_2700x/n.npy')
-run_times1 = np.load('amd_ryzen_2700x_sp/6_break_times.npy')
-
-
 
 run_times_means = run_times.mean(axis=2)
 run_times_stds = run_times.std(axis=2, ddof=1)
-run_times_means1 = run_times1.mean(axis=2)
-run_times_stds1 = run_times1.std(axis=2, ddof=1)
-
 
 plt.figure()
 plt.grid()
 plt.errorbar(n, run_times_means[0], yerr=k*run_times_stds[0], capsize=2.0, label='Standard')
 plt.errorbar(n, run_times_means[1], yerr=k*run_times_stds[1], capsize=2.0, label='TF CPU float64')
-# plt.errorbar(n, run_times_means[2], yerr=k*run_times_stds[2], capsize=2.0, label='TF CPU')
-
-# plt.errorbar(n, run_times_means1[0], yerr=k*run_times_stds1[0], capsize=2.0, label='SciPy sp')
-# plt.errorbar(n, run_times_means1[1], yerr=k*run_times_stds1[1], capsize=2.0, label='TF GPU sp')
-# plt.errorbar(n, run_times_means1[2], yerr=k*run_times_stds1[2], capsize=2.0, label='TF CPU sp')
 
 plt.xlabel('Number of data points')
 plt.ylabel('Run time (seconds, Lower is better)')
@@ -38,7 +27,6 @@ plt.semilogy()
 plt.legend()
 
 print('TF float64 1e7 time faster', run_times_means[0][-1]/run_times_means[1][-1])
-print('TF float32 1e7 time faster', run_times_means1[2][-1]/run_times_means[1][-1])
-
+print('TF float32 1e7 time faster', run_times_means[1][-1]/run_times_means[1][-1])
 
 plt.show()
