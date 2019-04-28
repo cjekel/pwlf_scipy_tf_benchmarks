@@ -1,6 +1,5 @@
 import cupy as cp
 import numpy as np
-import tensorflow as tf
 import pwlf
 from time import time
 import os
@@ -47,6 +46,7 @@ for i, n_data in enumerate(n):
     break
 
 # Turn gpu OFF
+import tensorflow as tf
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 for i, n_data in enumerate(n):
     A, y = generate_matrix(n_data)
