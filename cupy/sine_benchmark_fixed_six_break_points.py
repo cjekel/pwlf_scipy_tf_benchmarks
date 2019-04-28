@@ -5,7 +5,7 @@ import pwlf
 from time import time
 import os
 # force TF to use CPU
-os.environ['CUDA_VISIBLE_DEVICES'] = ''
+os.environ['CUDA_VISIBLE_DEVICES'] = 2#''
 breaks = np.array((0.0, 0.94, 2.96, 4.93, 7.02, 9.04, 10.0))
 
 n = np.logspace(3, 7, num=15, dtype=np.int)
