@@ -7,7 +7,7 @@ import os
 # force TF to use CPU
 breaks = np.array((0.0, 0.94, 2.96, 4.93, 7.02, 9.04, 10.0))
 
-n = np.logspace(3, 7, num=15, dtype=np.int)
+n = np.logspace(7, 7, num=15, dtype=np.int)
 n_repeats = 10
 run_times = np.zeros((4, n.size, n_repeats))
 
@@ -32,7 +32,7 @@ for i, n_data in enumerate(n):
     for j in range(n_repeats):
         # numpy.linalg.lstsq
         t0 = time()
-        beta_np, _, _, _ = np.linalg.lstsq(A, y)
+        # beta_np, _, _, _ = np.linalg.lstsq(A, y)
         t1 = time()
         # cupy.linalg.lstsq
         t2 = time()
@@ -42,25 +42,25 @@ for i, n_data in enumerate(n):
         run_times[1, i, j] = t3 - t2
     break
 
-# Turn gpu OFF
-os.environ['CUDA_VISIBLE_DEVICES'] = ''
-for i, n_data in enumerate(n):
-    A, y = generate_matrix(n_data)
-    Atf = tf.convert_to_tensor(A)
-    ytf = tf.convert_to_tensor(y.reshape(-1, 1))
-    for j in range(n_repeats):
-        # tf.linalg.lstsq fast=True
-        t4 = time()
-        with tf.Session():
-            beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=True).eval()
-        t5 = time()
-        # tf.linalg.lstsq fast=False
-        t6 = time()
-        with tf.Session():
-            beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=False).eval()
-        t7 = time()
-        run_times[2, i, j] = t5 - t4
-        run_times[3, i, j] = t7 - t6
-    break
+# # Turn gpu OFF
+# os.environ['CUDA_VISIBLE_DEVICES'] = ''
+# for i, n_data in enumerate(n):
+#     A, y = generate_matrix(n_data)
+#     Atf = tf.convert_to_tensor(A)
+#     ytf = tf.convert_to_tensor(y.reshape(-1, 1))
+#     for j in range(n_repeats):
+#         # tf.linalg.lstsq fast=True
+#         t4 = time()
+#         with tf.Session():
+#             beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=True).eval()
+#         t5 = time()
+#         # tf.linalg.lstsq fast=False
+#         t6 = time()
+#         with tf.Session():
+#             beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=False).eval()
+#         t7 = time()
+#         run_times[2, i, j] = t5 - t4
+#         run_times[3, i, j] = t7 - t6
+#     break
 np.save('6_break_times.npy', run_times)
 np.save('n.npy', n)
