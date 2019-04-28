@@ -3,7 +3,6 @@ import numpy as np
 import pwlf
 from time import time
 import os
-# force TF to use CPU
 breaks = np.array((0.0, 0.94, 2.96, 4.93, 7.02, 9.04, 10.0))
 
 n = np.logspace(3, 6.8, num=15, dtype=np.int)
@@ -34,7 +33,7 @@ for i, n_data in enumerate(n):
         ycp = cp.asarray(y)
         # numpy.linalg.lstsq
         t0 = time()
-        beta_np, _, _, _ = np.linalg.lstsq(A, y)
+        beta_np, _, _, _ = np.linalg.lstsq(A, y, rcond=1e-15)
         t1 = time()
         # cupy.linalg.lstsq
         t2 = time()
@@ -44,7 +43,6 @@ for i, n_data in enumerate(n):
         pinned_mempool.free_all_blocks()
         run_times[0, i, j] = t1 - t0
         run_times[1, i, j] = t3 - t2
-    break
 
 np.save('6_break_times.npy', run_times)
 np.save('n.npy', n)

@@ -7,10 +7,10 @@ import os
 # force TF to use CPU
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
-breaks = np.array((0.0, 0.94, 2.96, 4.93, 7.02, 9.04, 10.0))
+breaks = np.linspace(0.0, 10.0, num=21)
 
 n_repeats = 10
-run_times = np.load('6_break_times.npy')
+run_times = np.load('20_break_times.npy')
 n = np.load('n.npy')
 
 
@@ -45,5 +45,5 @@ for i, n_data in enumerate(n):
         run_times[2, i, j] = t5 - t4
         run_times[3, i, j] = t7 - t6
 
-np.save('6_break_times.npy', run_times)
+np.save('20_break_times.npy', run_times)
 np.save('n.npy', n)
