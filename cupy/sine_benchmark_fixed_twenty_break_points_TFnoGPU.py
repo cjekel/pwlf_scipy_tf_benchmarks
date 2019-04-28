@@ -27,19 +27,21 @@ def generate_matrix(n_data):
     return A, y
 
 
-with tf.Session():
-    for i, n_data in enumerate(n):
-        A, y = generate_matrix(n_data)
-        Atf = tf.convert_to_tensor(A)
-        ytf = tf.convert_to_tensor(y.reshape(-1, 1))
-        for j in range(n_repeats):
+for i, n_data in enumerate(n):
+    A, y = generate_matrix(n_data)
+    Atf = tf.convert_to_tensor(A)
+    ytf = tf.convert_to_tensor(y.reshape(-1, 1))
+    beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=True)
+    beta_tf_not_fast = tf.linalg.lstsq(Atf, ytf, fast=False)
+    for j in range(n_repeats):
+        with tf.Session():
             # tf.linalg.lstsq fast=True
             t4 = time()
-            beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=True).eval()
+            beta_tf = beta_tf_fast.eval()
             t5 = time()
             # tf.linalg.lstsq fast=False
             t6 = time()
-            beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=False).eval()
+            beta_tf_not = beta_tf_not_fast.eval()
             t7 = time()
             run_times[2, i, j] = t5 - t4
             run_times[3, i, j] = t7 - t6
