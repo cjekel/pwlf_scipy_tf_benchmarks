@@ -5,7 +5,6 @@ import pwlf
 from time import time
 import os
 # force TF to use CPU
-os.environ['CUDA_VISIBLE_DEVICES'] = 2#''
 breaks = np.array((0.0, 0.94, 2.96, 4.93, 7.02, 9.04, 10.0))
 
 n = np.logspace(3, 7, num=15, dtype=np.int)
@@ -30,8 +29,6 @@ for i, n_data in enumerate(n):
     A, y = generate_matrix(n_data)
     Acp = cp.array(A)
     ycp = cp.array(y)
-    Atf = tf.convert_to_tensor(A)
-    ytf = tf.convert_to_tensor(y.reshape(-1, 1))
     for j in range(n_repeats):
         # numpy.linalg.lstsq
         t0 = time()
@@ -41,6 +38,17 @@ for i, n_data in enumerate(n):
         t2 = time()
         beta_cp = cp.linalg.lstsq(Acp, ycp)
         t3 = time()
+        run_times[0, i, j] = t1 - t0
+        run_times[1, i, j] = t3 - t2
+    break
+
+# Turn gpu OFF
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
+for i, n_data in enumerate(n):
+    A, y = generate_matrix(n_data)
+    Atf = tf.convert_to_tensor(A)
+    ytf = tf.convert_to_tensor(y.reshape(-1, 1))
+    for j in range(n_repeats):
         # tf.linalg.lstsq fast=True
         t4 = time()
         with tf.Session():
@@ -51,12 +59,8 @@ for i, n_data in enumerate(n):
         with tf.Session():
             beta_tf_fast = tf.linalg.lstsq(Atf, ytf, fast=False).eval()
         t7 = time()
-        run_times[0, i, j] = t1 - t0
-        run_times[1, i, j] = t3 - t2
         run_times[2, i, j] = t5 - t4
         run_times[3, i, j] = t7 - t6
-        break
     break
-
 np.save('6_break_times.npy', run_times)
 np.save('n.npy', n)
