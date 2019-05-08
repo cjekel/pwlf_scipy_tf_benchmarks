@@ -37,7 +37,7 @@ for i, n_data in enumerate(n):
         t1 = time()
         # cupy.linalg.lstsq
         t2 = time()
-        beta_cp = cp.linalg.lstsq(Acp, ycp)
+        beta_cp, _, _, _ = cp.linalg.lstsq(Acp, ycp)
         t3 = time()
         mempool.free_all_blocks()
         pinned_mempool.free_all_blocks()
