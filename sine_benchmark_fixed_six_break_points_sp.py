@@ -33,5 +33,5 @@ for i, n_data in enumerate(n):
         # run_times[0, i, j] = t1 - t0
         run_times[1, i, j] = t3 - t2
 
-np.save('bench_run_times/6_break_times.npy', run_times)
+np.save('bench_run_times/6_sp_break_times.npy', run_times)
 np.save('bench_run_times/n.npy', n)

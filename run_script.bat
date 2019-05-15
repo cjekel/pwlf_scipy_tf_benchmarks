@@ -1,0 +1,4 @@
+python sine_benchmark_fixed_six_break_points.py
+rem python sine_benchmark_fixed_six_break_points_sp.py
+python sine_benchmark_fixed_twenty_break_points.py
+rem python sine_benchmark_fixed_twenty_break_points_sp.py
