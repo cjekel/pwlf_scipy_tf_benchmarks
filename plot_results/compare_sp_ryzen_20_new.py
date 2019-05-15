@@ -29,7 +29,7 @@ plt.ylabel('Run time (seconds, Lower is better)')
 plt.semilogx()
 plt.semilogy()
 plt.legend()
-plt.savefig('../figs/ryz_twenty_breaks.png', bbox_inches='tight')
+plt.savefig('../figs/ryz_twenty_breaks_new.png', bbox_inches='tight')
 
 print('TF float64 1e7 time faster', run_times_means[0][-1]/run_times_means1[0][-1])
 # print('TF float32 1e7 time faster', run_times_means[0][-1]/run_times_means1[1][-1])
